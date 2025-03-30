@@ -7,7 +7,7 @@ interface EditTitleModalProps {
   onClose: () => void;
   onConfirm: (title: string) => void;
   title: string;
-  type: 'module' | 'submodule';
+  type: 'module' | 'submodule' | 'lesson';
 }
 
 export const EditTitleModal: React.FC<EditTitleModalProps> = ({
@@ -42,7 +42,7 @@ export const EditTitleModal: React.FC<EditTitleModalProps> = ({
         </button>
 
         <h2 className="text-xl font-semibold text-[#2C3E50] mb-6">
-          Editar {type === 'module' ? 'módulo' : 'submódulo'}
+          Editar {type === 'module' ? 'módulo' : type === 'lesson' ? 'lección' : 'submódulo'}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,7 +55,7 @@ export const EditTitleModal: React.FC<EditTitleModalProps> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#3498DB] focus:border-transparent"
-              placeholder={`Ingresa el título del ${type === 'module' ? 'módulo' : 'submódulo'}`}
+              placeholder={`Ingresa el título del ${type === 'module' ? 'módulo' : type === 'lesson' ? 'lección' : 'submódulo'}`}
               required
             />
           </div>

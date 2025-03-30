@@ -19,7 +19,7 @@ export const contentService = {
 
     try {
       const response = await apiClient.get<ModuleContent>(
-        `/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/contents`,
+        `/users/me/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/contents`,
         {
           headers: {
             ...API_CONFIG.headers,
@@ -48,7 +48,7 @@ export const contentService = {
 
     try {
       const response = await apiClient.post<ModuleContent>(
-        `/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/contents/regenerate`,
+        `/users/me/courses/${courseId}/modules/${moduleId}/lessons/${lessonId}/contents/regenerate`,
         { feedback },
         { 
           headers: {

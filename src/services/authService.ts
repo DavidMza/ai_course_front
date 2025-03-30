@@ -17,7 +17,6 @@ export const authService = {
         { 
           headers: {
             ...API_CONFIG.headers,
-            'x-user-id': 'david'
           }
         }
       );

@@ -19,7 +19,9 @@ export const courseService = {
     }
 
     try {
-      const response = await apiClient.post('/users/me/courses', {
+      const relativePath = '/users/me/courses';
+
+      const response = await apiClient.post(relativePath, { 
         language: wizardData.language,
         steps: wizardData.steps
           .filter(step => step.answer)
@@ -52,7 +54,9 @@ export const courseService = {
     }
 
     try {
-      const response = await apiClient.get<CoursesResponse>('/users/me/courses', {
+      const relativePath = '/users/me/courses';
+
+      const response = await apiClient.get<CoursesResponse>(relativePath, {
         headers: {
           ...API_CONFIG.headers,
           'Authorization': `Bearer ${accessToken}`
@@ -72,7 +76,9 @@ export const courseService = {
     }
 
     try {
-      const response = await apiClient.get<Course>(`/courses/${courseId}`, {
+      const relativePath = `/users/me/courses/${courseId}`;
+
+      const response = await apiClient.get<Course>(relativePath, {
         headers: {
           ...API_CONFIG.headers,
           'Authorization': `Bearer ${accessToken}`
@@ -103,7 +109,9 @@ export const courseService = {
     }
 
     try {
-      await apiClient.patch(`/courses/${courseId}`, data, {
+      const relativePath = `/users/me/courses/${courseId}`;
+
+      await apiClient.patch(relativePath, data, {
         headers: {
           ...API_CONFIG.headers,
           'Authorization': `Bearer ${accessToken}`
@@ -121,7 +129,9 @@ export const courseService = {
     }
 
     try {
-      await apiClient.delete(`/courses/${courseId}`, {
+      const relativePath = `/users/me/courses/${courseId}`;
+
+      await apiClient.delete(relativePath, {
         headers: {
           ...API_CONFIG.headers,
           'Authorization': `Bearer ${accessToken}`

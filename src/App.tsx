@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { MainLayout } from './components/layout/MainLayout';
 import { Hero } from './components/landing/Hero';
@@ -11,11 +11,23 @@ import { PublicCoursesPage } from './pages/PublicCoursesPage';
 import { useAuthStore } from './store/authStore';
 
 const PrivateRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated, isLoading } = useAuthStore(
+    (state) => ({ isAuthenticated: state.isAuthenticated, isLoading: state.isLoading })
+  );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
 export function App() {
+  // Initialize auth state on app load
+  useEffect(() => {
+    useAuthStore.getState().initializeAuth();
+  }, []); // Empty dependency array ensures this runs only once on mount
+
   return (
     <Router>
       <MainLayout>

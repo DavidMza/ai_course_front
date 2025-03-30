@@ -124,7 +124,8 @@ export const DraggableModule: React.FC<DraggableModuleProps> = ({
   const renderLessonsList = () => {
     return (
       <div className="border-t border-gray-100">
-        {module.lessons.map((lesson) => (
+        {/* Check if module.lessons is an array before mapping */}
+        {Array.isArray(module.lessons) && module.lessons.map((lesson) => (
           <div
             key={lesson.id}
             className={cn(
@@ -217,7 +218,8 @@ export const DraggableModule: React.FC<DraggableModuleProps> = ({
         isOpen={!!editingLessonId}
         onClose={() => setEditingLessonId(null)}
         onConfirm={handleEditLesson}
-        title={module.lessons.find(l => l.id === editingLessonId)?.title || ''}
+        // Add check for module.lessons before calling find
+        title={Array.isArray(module.lessons) ? module.lessons.find(l => l.id === editingLessonId)?.title || '' : ''}
         type="lesson"
       />
 

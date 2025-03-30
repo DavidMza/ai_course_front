@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader } from 'lucide-react';
 import { useCourseStore } from '../store/courseStore';
+import { useAuthStore } from '../store/authStore';
 import { CourseTitle } from '../components/course/CourseTitle';
 import { CourseLayout } from '../components/course/CourseLayout';
 
@@ -20,12 +21,24 @@ export const CoursePage: React.FC = () => {
     updateModule,
     updateLesson
   } = useCourseStore();
+  const { isLoading: isAuthLoading, isAuthenticated } = useAuthStore(
+    (state) => ({ isLoading: state.isLoading, isAuthenticated: state.isAuthenticated })
+  );
   
   const [isEditorMode, setIsEditorMode] = useState(false);
   const [selectedModuleId, setSelectedModuleId] = useState<string | null>(null);
   const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
 
   useEffect(() => {
+    if (isAuthLoading) {
+      return; 
+    }
+
+    if (!isAuthenticated) {
+       navigate('/login'); 
+       return;
+    }
+    
     if (!courseId) {
       navigate('/dashboard');
       return;
@@ -33,6 +46,7 @@ export const CoursePage: React.FC = () => {
 
     const loadCourse = async () => {
       try {
+        // console.log("[CoursePage] Auth loaded, fetching course..."); 
         await fetchCourse(courseId);
       } catch (err) {
         console.error('Error loading course:', err);
@@ -40,7 +54,7 @@ export const CoursePage: React.FC = () => {
     };
 
     loadCourse();
-  }, [courseId, fetchCourse, navigate]);
+  }, [courseId, fetchCourse, navigate, isAuthLoading, isAuthenticated]);
 
   const handleEditCourse = (data: { title: string; level: string; duration: string }) => {
     if (courseId && currentCourse) {
@@ -104,10 +118,26 @@ export const CoursePage: React.FC = () => {
           selectedLessonId={selectedLessonId}
           isEditorMode={isEditorMode}
           onSelectLesson={handleSelectLesson}
-          onEditModule={updateModule}
-          onEditLesson={updateLesson}
-          onDeleteModule={deleteModule}
-          onDeleteLesson={deleteLesson}
+          onEditModule={(moduleId, title) => {
+            if (courseId) {
+              updateModule(courseId, moduleId, title);
+            }
+          }}
+          onEditLesson={(moduleId, lessonId, title) => {
+            if (courseId) {
+              updateLesson(courseId, moduleId, lessonId, title);
+            }
+          }}
+          onDeleteModule={async (moduleId) => {
+            if (courseId) {
+              await deleteModule(courseId, moduleId);
+            }
+          }}
+          onDeleteLesson={async (moduleId, lessonId) => {
+            if (courseId) {
+              await deleteLesson(courseId, moduleId, lessonId);
+            }
+          }}
           onRefreshCourse={() => fetchCourse(courseId)}
         />
       </div>
