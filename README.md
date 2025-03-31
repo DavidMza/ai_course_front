@@ -1,6 +1,6 @@
 # Curso Generator App
 
-Una aplicación web para generar y gestionar cursos educativos utilizando IA.
+Una aplicación web para generar y gestionar cursos educativos utilizando IA
 
 ## Requisitos Previos
 
