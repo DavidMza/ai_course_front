@@ -29,11 +29,3 @@ jobs:
         with:
           github_token: ${{ secrets.PAT }}
           publish_dir: ./dist
-{
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build && cpy dist/index.html dist/404.html",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  }
-}
