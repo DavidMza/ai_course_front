@@ -47,10 +47,12 @@ jobs: # Trabajos a ejecutar
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: List contents of dist directory before upload
+        run: ls -lR dist
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Sube el directorio dist (que ahora contiene index.html y 404.html)
           path: './dist'
 
       - name: Deploy to GitHub Pages
