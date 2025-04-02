@@ -6,13 +6,13 @@ on: # Eventos que disparan el workflow
       - main
       - feature/deploy-github-pages # Puedes descomentar esto si aún usas esa rama
 
-# Permisos necesarios - ¡CORREGIDO! Movido al nivel superior
+# Permisos necesarios
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Permitir solo un despliegue concurrente - Ya estaba bien
+# Permitir solo un despliegue concurrente
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -25,13 +25,13 @@ jobs: # Trabajos a ejecutar
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # Usa una versión más reciente si es posible
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4 # Usa una versión más reciente si es posible
+        uses: actions/setup-node@v4
         with:
-          node-version: 18 # O la versión que necesites
-          cache: 'npm' # Añadir caché para acelerar instalaciones futuras
+          node-version: 18
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
@@ -39,21 +39,20 @@ jobs: # Trabajos a ejecutar
       - name: Build project
         run: npm run build
         env:
-          # Aquí es donde se inyecta la variable para el build de Vite
-          VITE_API_URL: ${{ vars.VITE_API_URL }} # Usa vars si creaste una Variable
-          # VITE_API_URL: ${{ secrets.VITE_API_URL }} # Usa secrets si creaste un Secret
+          VITE_API_URL: ${{ vars.VITE_API_URL }} # O secrets.VITE_API_URL
+
+      - name: Copy index.html to 404.html for SPA fallback
+        run: cp dist/index.html dist/404.html # Copia el index generado a 404.html
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4 # Acción para configurar Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3 # Acción para subir el artefacto
+        uses: actions/upload-pages-artifact@v3
         with:
-          # Sube el directorio dist
+          # Sube el directorio dist (que ahora contiene index.html y 404.html)
           path: './dist'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # Acción oficial y más moderna para desplegar
-        # No necesitas peaceiris/actions-gh-pages ni el PAT si configuras GitHub Pages
-        # correctamente en la configuración del repositorio y usas estas acciones oficiales.
+        uses: actions/deploy-pages@v4
