@@ -1,23 +1,23 @@
 name: Deploy to GitHub Pages
 
-on:
+on: # Eventos que disparan el workflow
   push:
     branches:
       - main
-      - feature/deploy-github-pages # Puedes descomentar esto si aún usas esa rama
+      # - feature/deploy-github-pages # Puedes descomentar esto si aún usas esa rama
 
-  # Permisos necesarios para que actions-gh-pages funcione con GITHUB_TOKEN (si decides usarlo)
-  permissions:
-    contents: read
-    pages: write
-    id-token: write
+# Permisos necesarios - ¡CORREGIDO! Movido al nivel superior
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
-# Permitir solo un despliegue concurrente, cancelando los anteriores
+# Permitir solo un despliegue concurrente - Ya estaba bien
 concurrency:
   group: "pages"
   cancel-in-progress: true
 
-jobs:
+jobs: # Trabajos a ejecutar
   build-and-deploy:
     environment: # Configuración necesaria para GitHub Pages
       name: github-pages
