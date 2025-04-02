@@ -3,7 +3,7 @@ const ENV_BASE_URL = import.meta.env.VITE_API_URL || ''; // Get base from env or
 // Ensure base URL ends correctly and append /api/v1
 const cleanBaseUrl = ENV_BASE_URL.endsWith('/') ? ENV_BASE_URL.slice(0, -1) : ENV_BASE_URL;
 const finalBaseUrl = `${cleanBaseUrl}/api/v1`;
-
+console.log(finalBaseUrl);
 export const API_CONFIG = {
   baseUrl: finalBaseUrl,
   headers: {

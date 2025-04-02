@@ -18,7 +18,7 @@ export const wizardService = {
     }
 
     try {
-      const response = await apiClient.get<WizardData>('/wizard', {
+      const response = await apiClient.get<WizardData>('/users/me/wizard', {
         headers: {
           ...API_CONFIG.headers,
           'Authorization': `Bearer ${accessToken}`
