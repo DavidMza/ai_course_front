@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Clock, Check, RefreshCw } from 'lucide-react';
 import { Module, Lesson } from '../../types/course';
 import { ModuleContent } from '../../types/content';
@@ -150,7 +151,7 @@ export const ContentViewer: React.FC<ContentViewerProps> = ({
           </div>
           
           <div className="prose prose-lg prose-slate max-w-none">
-            <ReactMarkdown>{content?.content || ''}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content?.content || ''}</ReactMarkdown>
           </div>
         </div>
       </div>
