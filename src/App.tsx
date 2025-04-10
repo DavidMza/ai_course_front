@@ -10,6 +10,8 @@ import { CoursePage } from './pages/CoursePage';
 import { PublicCoursesPage } from './pages/PublicCoursesPage';
 import { useAuthStore } from './store/authStore';
 
+const baseName = import.meta.env.BASE_URL;
+
 const PrivateRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuthStore(
     (state) => ({ isAuthenticated: state.isAuthenticated, isLoading: state.isLoading })
@@ -29,7 +31,7 @@ export function App() {
   }, []); // Empty dependency array ensures this runs only once on mount
 
   return (
-    <Router>
+    <Router basename={baseName}>
       <MainLayout>
         <Routes>
           <Route path="/" element={<Hero />} />
