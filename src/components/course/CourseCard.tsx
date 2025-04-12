@@ -4,12 +4,18 @@ import { Calendar, BookOpen, Clock, Trash2 } from 'lucide-react';
 import { CourseListItem } from '../../types/course';
 import { ConfirmationModal } from '../common/ConfirmationModal';
 import { useCourseStore } from '../../store/courseStore';
+import PendingCourseCard from './PendingCourseCard';
 
 interface CourseCardProps {
   course: CourseListItem;
 }
 
 export const CourseCard: React.FC<CourseCardProps> = ({ course }) => {
+  // Si el curso está en estado pendiente, mostrar la tarjeta especial de pendiente
+  if (course.status === 'pending') {
+    return <PendingCourseCard course={course} />;
+  }
+
   const navigate = useNavigate();
   const deleteCourse = useCourseStore(state => state.deleteCourse);
   const [showDeleteModal, setShowDeleteModal] = useState(false);

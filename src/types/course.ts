@@ -37,6 +37,7 @@ export interface Course {
   visibility?: string;
   modules: Module[];
   metadata?: CourseMetadata;
+  status?: 'pending' | 'generated';
 }
 
 export interface CourseListItem {
@@ -48,6 +49,7 @@ export interface CourseListItem {
   language: string;
   duration: string;
   visibility?: string;
+  status?: 'pending' | 'generated';
 }
 
 export interface CoursesResponse {

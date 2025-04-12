@@ -5,6 +5,7 @@ import { useCourseStore } from '../store/courseStore';
 import { useAuthStore } from '../store/authStore';
 import { CourseTitle } from '../components/course/CourseTitle';
 import { CourseLayout } from '../components/course/CourseLayout';
+import { EmptyState } from '../components/course/EmptyState';
 
 export const CoursePage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -90,6 +91,20 @@ export const CoursePage: React.FC = () => {
     return (
       <div className="min-h-screen bg-[#F4F6F7] flex items-center justify-center">
         <p className="text-[#34495E]">Curso no encontrado</p>
+      </div>
+    );
+  }
+
+  // Si el curso está en estado "pending", mostrar la vista especial
+  if (currentCourse.status === 'pending') {
+    return (
+      <div className="min-h-screen bg-[#F4F6F7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-2xl font-bold text-[#2C3E50]">Curso en generación</h1>
+          </div>
+          <EmptyState course={currentCourse} />
+        </div>
       </div>
     );
   }
