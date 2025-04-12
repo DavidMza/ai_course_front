@@ -129,7 +129,7 @@ export const courseService = {
     }
 
     try {
-      const relativePath = `/users/me/courses/${courseId}`;
+      const relativePath = `/users/me/courses/${courseId}/unsubscribe`;
 
       await apiClient.delete(relativePath, {
         headers: {
