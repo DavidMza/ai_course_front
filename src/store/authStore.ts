@@ -12,6 +12,7 @@ interface AuthState {
   register: (data: RegisterData) => Promise<void>;
   logout: () => void;
   initializeAuth: () => void;
+  setTokens: (accessToken: string, refreshToken: string) => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
@@ -81,13 +82,13 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       // const storedUser = localStorage.getItem('user');
       // const user = storedUser ? JSON.parse(storedUser) : null;
 
-      if (accessToken) {
-        // Basic check: Assume token is valid if present
+      if (accessToken && refreshToken) { // Ensure both tokens are present
+        // Basic check: Assume tokens are valid if present
         // TODO: Add token validation logic here (e.g., check expiry or call backend)
         set({
           isAuthenticated: true,
           accessToken: accessToken,
-          refreshToken: refreshToken,
+          refreshToken: refreshToken, // refreshToken is confirmed to be non-null here
           user: { // Temporary placeholder until user fetching is implemented
             id: 'temp-id-reloaded', 
             email: '', name: '', lastname: '', language: 'es', assistant: 'default', model: 'default' 
@@ -95,12 +96,25 @@ export const useAuthStore = create<AuthState>((set, get) => ({
           isLoading: false // Set isLoading to false
         });
       } else {
-        // Ensure state is clean if no token found
+        // Ensure state is clean if either token is missing or no token found
+        localStorage.removeItem('accessToken'); // Clean up potentially mismatched tokens
+        localStorage.removeItem('refreshToken');
         set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isLoading: false }); // Set isLoading to false
       }
     } catch (error) {
         console.error("[AuthStore] Error during initialization:", error);
+        localStorage.removeItem('accessToken'); // Clean up on error as well
+        localStorage.removeItem('refreshToken');
         set({ user: null, isAuthenticated: false, accessToken: null, refreshToken: null, isLoading: false }); // Ensure loading stops on error
     } 
+  },
+  setTokens: (accessToken: string, refreshToken: string) => {
+    set({
+      accessToken,
+      refreshToken,
+      isAuthenticated: true,
+    });
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
   },
 }));

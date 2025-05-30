@@ -48,4 +48,27 @@ export const authService = {
       throw new AuthError('Error al registrar usuario', error);
     }
   },
+
+  refreshToken: async (token: string): Promise<AuthResponse> => {
+    try {
+      const response = await apiClient.post<AuthResponse>(
+        '/auth/refresh',
+        { refresh_token: token },
+        {
+          headers: {
+            ...API_CONFIG.headers,
+          },
+        }
+      );
+
+      if (!response.data) {
+        throw new AuthError('No se recibió respuesta del servidor durante la renovación del token');
+      }
+
+      return response.data;
+    } catch (error) {
+      console.error('Error en refreshToken:', error);
+      throw new AuthError('Error al renovar el token', error);
+    }
+  },
 };
